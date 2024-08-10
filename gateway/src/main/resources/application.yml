@@ -1,0 +1,38 @@
+security:
+  secretToken: 7689098B59776874367639792F423F4528482B4D6251765468576D5A71347438
+
+server:
+  port: 8091
+
+spring:
+  application:
+    name: API-Gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: USERSERVICE
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - APIFilter
+
+
+
+        - id: POSTSERVICE
+          uri: lb://POSTSERVICE
+          predicates:
+            - Path=/posts/**
+          filters:
+            - APIFilter
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    registry-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
